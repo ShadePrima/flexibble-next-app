@@ -16,11 +16,26 @@ type Providers = Record<string, Provider>
 const AuthProviders = () => {
   const [providers, setProviders] = React.useState<Providers | null>(null)
 
+  React.useEffect(() => {
+    const fetchProviders = async () => {
+      const res = await getProviders()
 
-  if(providers) {
+      console.log(res, 'res')
+
+      setProviders(res)
+    }
+
+    fetchProviders()
+  }, [])
+
+  if (providers) {
     return (
       <div>
-        
+        {Object.values(providers).map((provider: Provider, index) => (
+          <button key={index} onClick={() => signIn(provider?.id)}>
+            {provider.id}
+          </button>
+        ))}
       </div>
     )
   }
